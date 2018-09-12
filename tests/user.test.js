@@ -6,7 +6,7 @@
  * 3. update user info into database by id
  * 4. remove user from database by id
  * 5. get users from database by desired_group_size
- * and / or desired_interaction_frequency
+ * and desired_interaction_frequency
  * 6. get users from database by friendly_rating and /
  * or frequency_rating
  */
@@ -27,6 +27,8 @@ const generic_user_checks = user => {
   expect(typeof user.game_nick).toBe('string')
   expect(typeof user.desired_group_size).toBe('number')
 }
+
+const is_valid_user = user => typeof user.nick === 'string' && user.nick.length > 0 && typeof user.game_nick === 'string' && user.game_nick.length > 0
 
 // 1.
 test('creates a new user in database', async () => {
@@ -72,11 +74,55 @@ test('remove user from database by id', async () => {
   expect(user).toBe(null)
 })
 
-/**
- *
- * 4. remove user from database by id
- * 5. get users from database by desired_group_size
- * and / or desired_interaction_frequency
- * 6. get users from database by friendly_rating and /
- * or frequency_rating
- */
+// 5.
+test('get users from database by desired_group_size and desired_interaction_frequency', async () => {
+  const searchs = user_mixture.desired_searchs
+  const fake_users = user_mixture.fake_users
+
+  for (let i=0; i<searchs.length; i++) {
+    const size = searchs[i].desired_group_size
+    const frequency = searchs[i].desired_interaction_frequency
+    const match = await User.find_desired_users(size, frequency)
+    const expected = fake_users.filter(user => user.desired_group_size === size && user.desired_interaction_frequency === frequency && is_valid_user(user))
+
+    expect(match.length).toBe(expected.length)
+
+    const expected_ids = expected.map(user => user.id)
+    const match_ids = match.map(user => user.id)
+
+    match_ids.map(id => {
+      expect(expected_ids).toContain(id)
+    })
+  }
+})
+
+// 6.
+test('get users from database by friendly_rating and / or frequency_rating', async () => {
+  const searchs = user_mixture.rating_searchs
+  const fake_users = user_mixture.fake_users
+
+  for (let i=0; i<searchs.length; i++) {
+    const expected = fake_users.filter(user => {
+      if (!is_valid_user(user)) return false
+      const frequency = searchs[i].frequency_rating || null
+      const friendly = searchs[i].friendly_rating || null
+      if (frequency !== null && friendly !== null) {
+        return user.frequency_rating >= frequency && user.friendly_rating >= friendly
+      } else if (frequency !== null) {
+        return user.frequency_rating >= frequency
+      } else {
+        return user.friendly_rating >= friendly
+      }
+    })
+
+    const match = await User.find_allowed_users(searchs[i])
+    expect(match.length).toBe(expected.length)
+
+    const match_ids = match.map(user => user.id)
+    const expected_ids = expected.map(user => user.id)
+
+    match_ids.map(id => {
+      expect(expected_ids).toContain(id)
+    })
+  }
+})
