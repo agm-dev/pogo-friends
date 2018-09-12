@@ -23,10 +23,10 @@ const populate_users = () => {
 
 exports.initialize_database = async () => {
   await drop_users()
-  console.log('removed user collection')
+  //console.log('removed user collection')
   const users = await populate_users()
   if (users.length === fake_users.length) {
-    console.log(`users collection has been populated with ${users.length} fake users`)
+    //console.log(`users collection has been populated with ${users.length} fake users`)
   } else {
     console.error('error on populating users collection')
   }
@@ -34,5 +34,5 @@ exports.initialize_database = async () => {
 
 exports.finalize_database = async () => {
   await drop_users()
-  console.log('removed data from database')
+  //console.log('removed data from database')
 }

@@ -19,6 +19,7 @@ const user_mixture = require('./mixtures/user.mixture')
 beforeAll(() => initialize_database())
 afterAll(() => finalize_database())
 
+// TODO: put this on utils
 const generic_user_checks = user => {
   expect(user).not.toBe(null)
   expect(user).not.toBe(undefined)
@@ -63,6 +64,19 @@ test('update user info into database', async () => {
   fields.map(field => {
     expect(updated_user[field]).toBe(user[field])
   })
+})
+
+test('update user only changes sent info', async () => {
+  const data = user_mixture.update_user_nick
+  const fake_users = user_mixture.fake_users
+  const id = data.id
+  const nick = data.nick
+  const filtered = fake_users.filter(user => user.id === id)
+  const expected_user = filtered[0]
+  const user = await User.update_user({ id, nick })
+  expect(user.nick).toBe(nick)
+  expect(user.id).toBe(expected_user.id)
+  expect(user.game_nick).toBe(expected_user.game_nick)
 })
 
 // 4.

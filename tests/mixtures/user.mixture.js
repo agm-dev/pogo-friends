@@ -10,6 +10,7 @@ module.exports = {
     { id: 8, game_nick: 'game-nick-8', nick: 'nick-8', desired_group_size: 10, desired_interaction_frequency: 1 },
     { id: 9, game_nick: 'to be deleted', nick: 'nick-9' },
     { id: 10, game_nick: 'to be updated', nick: 'nick-10' },
+    { id: 11, game_nick: 'to be updated', nick: 'nick-11' },
   ],
   create_user_id: 666,
   update_user: {
@@ -18,6 +19,10 @@ module.exports = {
     nick: 'the best nick ever',
     desired_group_size: 10,
     desired_interaction_frequency: 2,
+  },
+  update_user_nick: {
+    id: 11,
+    nick: 'nock'
   },
   delete_user_id: 9,
   desired_searchs: [

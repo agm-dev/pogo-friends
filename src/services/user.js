@@ -1,6 +1,7 @@
 // requires
 require('../lib/database')
 const User = require('../models/User')
+const config = require('../config/user')
 
 exports.create_user = async user => {
   const new_user = new User(user)
@@ -61,4 +62,15 @@ exports.find_allowed_users = async search => {
 
   const users = await User.find({ $and: search_criteria })
   return users
+}
+
+exports.filter_user_info = user => {
+  const valid_fields = config.public_fields
+  const data = user.hasOwnProperty('_id') ? user : user._doc
+  return Object.entries(data).reduce((result, [key, value]) => {
+    const current = {}
+    if (!valid_fields.includes(key)) return result
+    current[key] = value
+    return Object.assign(result, current)
+  }, {})
 }
