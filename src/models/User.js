@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const user_config = require('../config/user')
 
-const model_name = 'User'
+const model_name = user_config.model_name
 
 const rating = new mongoose.Schema({
   value: {

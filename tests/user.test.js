@@ -17,7 +17,7 @@ const { initialize_database, finalize_database } = require('./test-utils')
 const user_mixture = require('./mixtures/user.mixture')
 
 beforeAll(() => initialize_database())
-afterAll(() => finalize_database())
+//afterAll(() => finalize_database())
 
 // TODO: put this on utils
 const generic_user_checks = user => {
