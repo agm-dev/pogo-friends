@@ -8,6 +8,7 @@
 
 const bot = require('../src/services/bot')
 const mixture = require('./mixtures/bot.mixture')
+const user_config = require('../src/config/user')
 
 // TODO: put this on utils
 const generic_user_checks = user => {
@@ -46,4 +47,32 @@ test('bot sets nick', async () => {
   expect(updated.id).toBe(mixture.update_nick_user.id)
   expect(updated.game_nick).toBe(mixture.update_nick_user.game_nick)
   expect(updated.nick).toBe(mixture.update_nick)
+})
+
+test('bot sets user desired size', async () => {
+  const info = mixture.update_desired_size
+  const user = await bot.create_user(info)
+  const updated = await bot.set_user_desired_size(info.id, mixture.test_desired_size)
+  expect(updated.id).toBe(user.id)
+  expect(updated.desired_group_size).toBe(mixture.test_desired_size)
+  const updated_default = await bot.set_user_desired_size(info.id)
+  expect(updated_default.id).toBe(user.id)
+  expect(updated_default.desired_group_size).toBe(user_config.default_desired_group_size)
+})
+
+test('bot sets user desired interaction frequency', async () => {
+  const info = mixture.update_desired_frequency
+  const user = await bot.create_user(info)
+  const updated = await bot.set_user_desired_frequency(info.id, mixture.test_desired_frequency)
+  expect(updated.id).toBe(user.id)
+  expect(updated.desired_interaction_frequency).toBe(mixture.test_desired_frequency)
+  const updated_default = await bot.set_user_desired_frequency(info.id)
+  expect(updated_default.id).toBe(user.id)
+  expect(updated_default.desired_interaction_frequency).toBe(user_config.default_desired_frequency)
+})
+
+test('bot says if user is validated or not', () => {
+  expect(bot.is_valid_user(mixture.valid_user)).toBe(true)
+  expect(bot.is_valid_user(mixture.wrong_user_1)).toBe(false)
+  expect(bot.is_valid_user(mixture.wrong_user_2)).toBe(false)
 })
