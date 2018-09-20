@@ -15,6 +15,7 @@ const Group = require('../src/services/group')
 const config = require('../src/config/group')
 const mixture = require('./mixtures/group.mixture')
 const user_model = require('../src/models/User')
+const group_model = require('../src/models/Group')
 const user_mixture = require('./mixtures/user.mixture')
 
 
@@ -104,5 +105,22 @@ test('group service gets all info from group by chat id', async () => {
 })
 
 test('group service gets all info from group by admin', async () => {
+  const data = await generate_group_data()
+  data.id = generate_random_group_id()
 
+  const group = await Group.create_group(data)
+  expect(group.id).toBe(data.id)
+
+  // get all groups from that admin
+  const results = await group_model.
+    find({ admin: data.admin }).
+    populate('admin').
+    populate('members').
+    populate('rejected')
+  const info = await Group.get_group_by_admin(data.admin)
+  expect(info.length).toBe(results.length)
+
+  results.map((group, index) => {
+    expect(info[index].id).toBe(group.id)
+  })
 })

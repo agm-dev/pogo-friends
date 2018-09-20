@@ -29,7 +29,14 @@ exports.get_group_by_chat = async chat_id => {
   return group
 }
 
-exports.get_group_by_admin = async id => {}
+exports.get_group_by_admin = async admin_id => {
+  const groups = await Group.
+    find({ admin: admin_id }).
+    populate('admin').
+    populate('members').
+    populate('rejected')
+  return groups
+}
 
 exports.update_group = async group => {}
 
