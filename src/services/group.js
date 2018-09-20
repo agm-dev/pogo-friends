@@ -20,7 +20,14 @@ exports.get_group_by_id = async id => {
   return group
 }
 
-exports.get_group_by_chat = async id => {}
+exports.get_group_by_chat = async chat_id => {
+  const group = await Group.
+    findOne({ chat_id }).
+    populate('admin').
+    populate('members').
+    populate('rejected')
+  return group
+}
 
 exports.get_group_by_admin = async id => {}
 

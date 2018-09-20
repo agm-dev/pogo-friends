@@ -6,4 +6,6 @@ module.exports = {
     frequency: 1,
   },
   test_user_id: 456,
+  test_group_chat_id: 888,
+
 }

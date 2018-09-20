@@ -88,7 +88,19 @@ test('group service gets all info from group by id', async () => {
 })
 
 test('group service gets all info from group by chat id', async () => {
+  const data = await generate_group_data()
+  data.id = generate_random_group_id()
+  data.chat_id = mixture.test_group_chat_id
 
+  const group = await Group.create_group(data)
+  expect(group.id).toBe(data.id)
+  expect(group.chat_id).toBe(mixture.test_group_chat_id)
+
+  const info = await Group.get_group_by_chat(data.chat_id)
+  generic_checks(info)
+  expect(info.chat_id).toBe(data.chat_id)
+  expect(info.admin._id).toEqual(group.admin._id)
+  // TODO: add tests to check admin, members, and rejected are populated
 })
 
 test('group service gets all info from group by admin', async () => {
