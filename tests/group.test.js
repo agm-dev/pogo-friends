@@ -142,7 +142,15 @@ test('group service can update group info by id', async () => {
 })
 
 test('group service can delete group by id', async () => {
+  const group_data = await generate_group_data()
+  group_data.id = generate_random_group_id()
 
+  const group = new group_model(group_data)
+  await group.save()
+
+  const removed = await Group.delete_group(group.id)
+  const query = await group_model.findOne({ id: group.id })
+  expect(query).toBe(null)
 })
 
 test('group service can delete all groups', async () => {

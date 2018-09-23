@@ -51,7 +51,11 @@ exports.update_group = async group => {
   return updated_group
 }
 
-exports.delete_group = async id => {}
+exports.delete_group = async id => {
+  const group = await Group.findOneAndRemove({ id: id })
+  if (typeof group.id === 'undefined') return null
+  return group
+}
 
 exports.delete_all_groups = async () => {}
 
