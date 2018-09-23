@@ -124,3 +124,32 @@ test('group service gets all info from group by admin', async () => {
     expect(info[index].id).toBe(group.id)
   })
 })
+
+test('group service can update group info by id', async () => {
+  const group_data = await generate_group_data()
+  group_data.id = generate_random_group_id()
+
+  const group = new group_model(group_data)
+  await group.save()
+
+  group_data.size = mixture.test_update_size
+  group_data.chat_id = mixture.test_update_chat_id
+  const updated = await Group.update_group(group_data)
+  expect(updated.size).toBe(mixture.test_update_size)
+  expect(updated.chat_id).toBe(mixture.test_update_chat_id)
+  expect(updated.id).toBe(group_data.id)
+  expect(updated.frequency).toBe(group_data.frequency)
+})
+
+test('group service can delete group by id', async () => {
+
+})
+
+test('group service can delete all groups', async () => {
+
+})
+
+test('group service can search groups and get those which matched the criteria', async () => {
+})
+
+

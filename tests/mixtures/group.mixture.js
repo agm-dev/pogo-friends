@@ -7,5 +7,6 @@ module.exports = {
   },
   test_user_id: 456,
   test_group_chat_id: 888,
-
+  test_update_size: 10,
+  test_update_chat_id: 123412,
 }

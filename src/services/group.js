@@ -38,9 +38,22 @@ exports.get_group_by_admin = async admin_id => {
   return groups
 }
 
-exports.update_group = async group => {}
+exports.update_group = async group => {
+  if (!group || typeof group.id !== 'string') {
+    console.error('can not update group without group id')
+    return {}
+  }
+
+  const updated_group = await Group.findOneAndUpdate(
+    { id: group.id },
+    group,
+    { new: true , runValidators: true })
+  return updated_group
+}
 
 exports.delete_group = async id => {}
+
+exports.delete_all_groups = async () => {}
 
 exports.find_groups = search => {}
 
