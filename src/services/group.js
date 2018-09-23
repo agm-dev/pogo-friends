@@ -57,8 +57,32 @@ exports.delete_group = async id => {
   return group
 }
 
-exports.delete_all_groups = async () => {}
+// TODO
+//exports.delete_all_groups = async () => {}
 
-exports.find_groups = search => {}
+exports.find_groups = async search => {
+  if (!search) {
+    console.error('required search data to find groups')
+
+  }
+  const search_criteria = []
+  search_criteria.push({ state: config.open }) // only open groups can be returned
+  search_criteria.push({ 'rejected.id': { $ne: search.user_id } }) // user must not be present on rejected users
+  search_criteria.push({ 'admin.id': { $ne: search.user_id } }) // user is not the admin of the group
+  search_criteria.push({ 'members.id': { $ne: search.user_id } }) // user is not already a member of that group
+
+  const search_frequency = search.frequency || config.min_frequency
+  const search_size = search.size || config.default_search_size
+
+  search_criteria.push({ frequency: search_frequency })
+  search_criteria.push({ size: search_size })
+
+  const groups = await Group.
+    find({ $and: search_criteria }).
+    populate('admin').
+    populate('members').
+    populate('rejected')
+  return groups
+}
 
 // TODO some privated methods from bot might be moved here if not required in public interface

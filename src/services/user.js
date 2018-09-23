@@ -27,6 +27,7 @@ exports.update_user = async user => {
   return updated_user
 }
 
+// TODO: this should remove all references to the user from group members and rejected properties
 exports.delete_user = async id => {
   const user = await User.findOneAndRemove({ id: id })
   if (typeof user.id === 'undefined') return null

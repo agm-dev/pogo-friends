@@ -6,6 +6,7 @@ module.exports = {
   max_size: 20,
   min_frequency: 1,
   max_frequency: 7,
+  default_search_size: 6,
   allowed: [0, 1, 2, 3],
   allowed_string: ['closed', 'open', 'full', 'validated'],
   0: 'closed',

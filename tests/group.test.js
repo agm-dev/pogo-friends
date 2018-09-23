@@ -148,16 +148,20 @@ test('group service can delete group by id', async () => {
   const group = new group_model(group_data)
   await group.save()
 
-  const removed = await Group.delete_group(group.id)
+  await Group.delete_group(group.id)
   const query = await group_model.findOne({ id: group.id })
   expect(query).toBe(null)
 })
 
-test('group service can delete all groups', async () => {
+// TODO
+//test('group service can delete all groups', async () => {})
 
-})
-
-test('group service can search groups and get those which matched the criteria', async () => {
+// TODO: test that current code actually works!
+test('group service can search groups and get those which matched the criteria of the user', async () => {
+  // create 6 groups with same admin
+  // create 3-4 users, with different data
+  // include those users as member or rejected in some groups
+  // do searchs with every user id, and assert results
 })
 
 
