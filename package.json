@@ -7,12 +7,12 @@
     "test": "tests"
   },
   "dependencies": {
-    "dotenv": "^6.0.0",
-    "mongoose": "^5.2.12"
+    "dotenv": "^6.1.0",
+    "mongoose": "^5.3.8"
   },
   "devDependencies": {
-    "eslint": "^5.5.0",
-    "jest": "^23.5.0"
+    "eslint": "^5.8.0",
+    "jest": "^23.6.0"
   },
   "scripts": {
     "lint": "eslint **/*.js --ignore-pattern node_modules/",
